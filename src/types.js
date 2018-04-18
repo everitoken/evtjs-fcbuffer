@@ -31,6 +31,8 @@ const types = {
   uint256: () => [bnbuf, {bits: 256}],
   uint512: () => [bnbuf, {bits: 512}],
 
+  varuint32: () => [intbuf, {bits: 32, variable: true}],
+
   int8: () => [intbuf, {signed: true, bits: 8}],
   int16: () => [intbuf, {signed: true, bits: 16}],
   int32: () => [intbuf, {signed: true, bits: 32}],
@@ -40,9 +42,9 @@ const types = {
   int256: () => [bnbuf, {signed: true, bits: 256}],
   int512: () => [bnbuf, {signed: true, bits: 512}],
 
-  float64: () => [float, {bits: 64}],
+  varint32: () => [intbuf, {signed: true, bits: 32, variable: true}],
 
-  // VarInt32: ()=> [bnbuf, {signed: true, bits: 32}],
+  float64: () => [float, {bits: 64}],
 }
 
 /*
@@ -290,8 +292,8 @@ const optional = validation => {
   }
 }
 
-const intbufType = ({signed = false, bits}) =>
-    // variable ? `${signed ? 'Varint' : 'Uint'}${bits}` : // Varint32 was used at some point
+const intbufType = ({signed = false, bits, variable}) =>
+    variable ? `Varint${bits}${signed ? 'ZigZag' : ''}` :
     `${signed ? 'Int' : 'Uint'}${bits}`
 
 const intbuf = (validation) => ({

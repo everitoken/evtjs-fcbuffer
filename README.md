@@ -97,7 +97,7 @@ permission_level.toObject()
 # References
 
 - Built-in Types: [types.js](./src/types.js)
-- EOS Definitions: [generated.json](https://github.com/EOSIO/eosjs-json/blob/master/schema/generated.json)
+- EOS Definitions: [schema](https://github.com/EOSIO/eosjs-json/blob/master/schema)
 
 # Environment
 

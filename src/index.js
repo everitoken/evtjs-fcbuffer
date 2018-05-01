@@ -20,7 +20,7 @@ const {create} = Fcbuffer
 */
 
 /**
-  @arg {object} definitions - examples https://github.com/EOSIO/eosjs-json/blob/master/schema/generated.json
+  @arg {object} definitions - examples https://github.com/EOSIO/eosjs-json/blob/master/schema
   @arg {SerializerConfig} config
   @return {CreateStruct}
 */

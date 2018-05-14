@@ -92,7 +92,7 @@ const map = validation => {
   const {annotation: [type1, type2]} = validation
   if (!isSerializer(type1)) { throw new TypeError(`map<type1, > unknown`) }
   if (!isSerializer(type2)) { throw new TypeError(`map<, type2> unknown`) }
-  
+
   return {
     fromByteBuffer (b) {
       const size = b.readVarint32()
@@ -200,7 +200,7 @@ const vector = validation => {
   if (!isSerializer(type)) {
     throw new TypeError('vector type should be a serializer')
   }
-  
+
   return {
     fromByteBuffer (b) {
       const size = b.readVarint32()
@@ -214,6 +214,9 @@ const vector = validation => {
       return result
     },
     appendByteBuffer (b, value) {
+      if(value == null) {
+        value = []
+      }
       validate(value, validation)
       b.writeVarint32(value.length)
       if(sorted === true) {
@@ -227,6 +230,9 @@ const vector = validation => {
       }
     },
     fromObject (value) {
+      if(value == null) {
+        value = []
+      }
       validate(value, validation)
       let result = []
       for (const o of value) {
@@ -240,6 +246,9 @@ const vector = validation => {
     toObject (value) {
       if (validation.defaults && value == null) {
         return [type.toObject(value)]
+      }
+      if(value == null) {
+        value = []
       }
       validate(value, validation)
       if(sorted === true) {

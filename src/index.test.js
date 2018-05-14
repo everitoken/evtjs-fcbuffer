@@ -26,7 +26,6 @@ describe('API', function () {
     const {vector, string} = Types()
     throws(() => vector('string'), /vector type should be a serializer/)
     const unsortedVector = vector(string(), false)
-    assertRequired(unsortedVector)
 
     assert.deepEqual(unsortedVector.fromObject(['z', 'z']), ['z', 'z']) // allows duplicates
     assert.deepEqual(unsortedVector.fromObject(['z', 'a']), ['z', 'a']) // does not sort
@@ -35,6 +34,13 @@ describe('API', function () {
     const sortedVector = vector(string(), true)
     assert.deepEqual(sortedVector.fromObject(['z', 'a']), ['a', 'z']) //sorts
     assertSerializer(sortedVector, ['a', 'z'])
+
+    // null object converts to an empty vector
+    const stringVector = vector(string())
+    const b = new ByteBuffer(ByteBuffer.DEFAULT_CAPACITY, ByteBuffer.LITTLE_ENDIAN)
+    stringVector.appendByteBuffer(b, null)
+    assert.deepEqual(stringVector.fromObject(null), [])
+    assert.deepEqual(stringVector.toObject(null), [])
   })
 
   it('FixedBytes', function () {
@@ -383,7 +389,7 @@ describe('Override', function () {
 
 describe('Custom Type', function () {
   it('Implied Decimal', function () {
-    
+
     const customTypes = {
       implied_decimal: ()=> [ImpliedDecimal, {decimals: 4}]
     }

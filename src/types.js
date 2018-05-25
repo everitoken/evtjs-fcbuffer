@@ -44,7 +44,8 @@ const types = {
 
   varint32: () => [intbuf, {signed: true, bits: 32, variable: true}],
 
-  float64: () => [float, {bits: 64}],
+  float32: () => [float, {bits: 32}],
+  float64: () => [float, {bits: 64}]
 }
 
 /*

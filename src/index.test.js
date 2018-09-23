@@ -12,6 +12,8 @@ describe('API', function () {
     const {bytes} = Types()
     const type = bytes()
     assertSerializer(type, '00aaeeff')
+    assertSerializer(type, Array.from([2, 1]), '020201', '0201')
+    assertSerializer(type, new Uint8Array([2, 1]), '020201', '0201')
     assertRequired(type)
   })
 
@@ -465,7 +467,7 @@ function assertCompile (definitions, config) {
   return structs
 }
 
-function assertSerializer (type, value, bufferHex) {
+function assertSerializer (type, value, bufferHex, internalValue = value) {
   const obj = type.fromObject(value) // tests fromObject
   const buf = Fcbuffer.toBuffer(type, obj) // tests appendByteBuffer
   if(bufferHex != null) {
@@ -473,7 +475,7 @@ function assertSerializer (type, value, bufferHex) {
   }
   const obj2 = Fcbuffer.fromBuffer(type, buf) // tests fromByteBuffer
   const obj3 = type.toObject(obj) // tests toObject
-  deepEqual(value, obj3, 'serialize object')
+  deepEqual(internalValue, obj3, 'serialize object')
   deepEqual(obj3, obj2, 'serialize buffer')
   return value
 }

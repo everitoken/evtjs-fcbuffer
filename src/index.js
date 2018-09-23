@@ -91,9 +91,9 @@ const fromBuffer = (types, structs) => (typeName, buf) => {
   return Fcbuffer.fromBuffer(type, buf)
 }
 
-const toBuffer = (types, structs) => (typeName, object) => {
+const toBuffer = (types, structs) => (typeName, value) => {
   assert.equal(typeof typeName, 'string', 'typeName (type or struct name)')
-  assert.equal(typeof object, 'object', 'object')
+  assert(value != null, 'value is required')
 
   let type = types[typeName]
   if(type) {
@@ -102,7 +102,7 @@ const toBuffer = (types, structs) => (typeName, object) => {
     type = structs[typeName]
   }
   assert(type, 'missing type or struct: ' + typeName)
-  return Fcbuffer.toBuffer(type, object)
+  return Fcbuffer.toBuffer(type, value)
 }
 
 module.exports.fromBuffer = Fcbuffer.fromBuffer

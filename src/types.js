@@ -437,7 +437,13 @@ const bytebuf = (validation) => {
       b.append(value.toString('binary'), 'binary')
     },
     fromObject (value) {
-      if (typeof value === 'string') { value = Buffer.from(value, 'hex') }
+      if (typeof value === 'string') {
+        value = Buffer.from(value, 'hex')
+      } else if (value instanceof Array) {
+        value = Buffer.from(value)
+      } else if (value instanceof Uint8Array) {
+        value = Buffer.from(value)
+      }
 
       validate(value, validation)
       return value
